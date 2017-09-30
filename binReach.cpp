@@ -53,7 +53,6 @@ public:
     reachIt->Show(true);
     assert(reachIt->SetTransparent(150));
     assert(reachIt->ShowFullScreen(true, wxFULLSCREEN_ALL));
-
     wxGridSizer *sizer = new wxGridSizer(2, 2, 0, 0);
 
     wxButton *button1 = new wxButton(reachIt, wxID_ANY, wxString::FromAscii("1"));
@@ -70,7 +69,33 @@ public:
     sizer->Add(button4, wxSizerFlags().Expand());
 
     reachIt->SetSizerAndFit(sizer);
+    sizer->Layout();
+    reachIt->Layout();
 
+    // sizer->Remove(1);
+    // reachIt->RemoveChild(button2);
+    button2->Destroy();
+
+    reachIt->Layout();
+
+    wxPanel *panel = new wxPanel(reachIt);
+    wxButton *button5 = new wxButton(panel, wxID_ANY, wxString::FromAscii("5"));
+    wxStaticBox *box1 = new wxStaticBox(panel, wxID_ANY, wxString::FromAscii("5b1"));
+    wxStaticBox *box2 = new wxStaticBox(panel, wxID_ANY, wxString::FromAscii("5b2"));
+    wxStaticBox *box3 = new wxStaticBox(panel, wxID_ANY, wxString::FromAscii("5b3"));
+
+    wxGridSizer *panelSizer = new wxGridSizer(2,2,0,0);
+    panelSizer->Add(button5, wxSizerFlags().Expand());
+    panelSizer->Add(box1, wxSizerFlags().Expand());
+    panelSizer->Add(box2, wxSizerFlags().Expand());
+    panelSizer->Add(box3, wxSizerFlags().Expand());
+
+    panel->SetSizerAndFit(panelSizer);
+
+    sizer->Insert(1, panel, wxSizerFlags().Expand());
+
+    sizer->Layout();
+    reachIt->Layout();
     return true;
   }
 };
