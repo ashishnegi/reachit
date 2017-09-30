@@ -28,17 +28,18 @@ public:
     wxPanel *panel = new wxPanel(reachIt);
     wxGridSizer *sizer = new wxGridSizer(2, 2, 0, 0);
 
-    wxButton *button = new wxButton(panel, wxID_ANY, wxString::FromAscii("1"));
-    sizer->Add(button, wxSizerFlags().Expand());
+    wxButton *button1 = new wxButton(panel, wxID_ANY, wxString::FromAscii("1"));
+    sizer->Add(button1, wxSizerFlags().Expand());
 
-    button = new wxButton(panel, wxID_ANY, wxString::FromAscii("2"));
-    sizer->Add(button, wxSizerFlags().Expand());
+    wxButton *button2 = new wxButton(panel, wxID_ANY, wxString::FromAscii("2"));
+    sizer->Add(button2, wxSizerFlags().Expand());
 
-    button = new wxButton(panel, wxID_ANY, wxString::FromAscii("3"));
-    sizer->Add(button, wxSizerFlags().Expand());
+    wxButton *button3 = new wxButton(panel, wxID_ANY, wxString::FromAscii("3"));
+    sizer->Add(button3, wxSizerFlags().Expand());
 
-    button = new wxButton(panel, wxID_ANY, wxString::FromAscii("4"));
-    sizer->Add(button, wxSizerFlags().Expand());
+    wxButton *button4 = new wxButton(panel, wxID_ANY, wxString::FromAscii("4"));
+    button4->MoveBeforeInTabOrder(button3);
+    sizer->Add(button4, wxSizerFlags().Expand());
 
     panel->SetSizerAndFit(sizer);
 
