@@ -1,6 +1,8 @@
 #include <wx/wx.h>
 #include <wx/grid.h>
 #include <wx/sizer.h>
+#include <wx/string.h>
+
 #include <iostream>
 #include <cassert>
 
@@ -23,25 +25,22 @@ public:
     assert(simple->SetTransparent(150));
     assert(simple->ShowFullScreen(true, wxFULLSCREEN_ALL));
 
-    wxGridSizer *sizer = new wxGridSizer(2, 2, 4, 4);
+    wxPanel *panel = new wxPanel(simple);
+    wxGridSizer *sizer = new wxGridSizer(2, 2, 0, 0);
 
-    wxGrid *grid = new wxGrid(simple, -1); //, wxPoint(0,0), wxSize(400,300));
-    grid->CreateGrid(2,2);
-    sizer->Add(grid, wxSizerFlags().Expand().Border(wxALL, 2));
+    wxStaticText *text = new wxStaticText(panel, wxID_ANY, wxString::FromAscii("1"));
+    sizer->Add(text, wxSizerFlags().Expand().Border(wxRIGHT, 1));
 
-    grid = new wxGrid(simple, -1); //, wxPoint(0,0), wxSize(400,300));
-    grid->CreateGrid(2,2);
-    sizer->Add(grid, wxSizerFlags().Expand().Border(wxALL, 2));
+    text = new wxStaticText(panel, wxID_ANY, wxString::FromAscii("2"));
+    sizer->Add(text, wxSizerFlags().Expand().Border(wxBOTTOM, 1));
 
-    grid = new wxGrid(simple, -1); //, wxPoint(0,0), wxSize(400,300));
-    grid->CreateGrid(2,2);
-    sizer->Add(grid, wxSizerFlags().Expand().Border(wxALL, 2));
+    text = new wxStaticText(panel, wxID_ANY, wxString::FromAscii("3"));
+    sizer->Add(text, wxSizerFlags().Expand().Border(wxUP, 1));
 
-    grid = new wxGrid(simple, -1); //, wxPoint(0,0), wxSize(400,300));
-    grid->CreateGrid(2,2);
-    sizer->Add(grid, wxSizerFlags().Expand().Border(wxALL, 2));
+    text = new wxStaticText(panel, wxID_ANY, wxString::FromAscii("4"));
+    sizer->Add(text, wxSizerFlags().Expand().Border(wxLEFT, 1));
 
-    simple->SetSizerAndFit(sizer);
+    panel->SetSizerAndFit(sizer);
 
     return true;
   }
