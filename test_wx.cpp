@@ -28,17 +28,17 @@ public:
     wxPanel *panel = new wxPanel(simple);
     wxGridSizer *sizer = new wxGridSizer(2, 2, 0, 0);
 
-    wxStaticText *text = new wxStaticText(panel, wxID_ANY, wxString::FromAscii("1"));
-    sizer->Add(text, wxSizerFlags().Expand().Border(wxRIGHT, 1));
+    wxButton *button = new wxButton(panel, wxID_ANY, wxString::FromAscii("1"));
+    sizer->Add(button, wxSizerFlags().Expand());
 
-    text = new wxStaticText(panel, wxID_ANY, wxString::FromAscii("2"));
-    sizer->Add(text, wxSizerFlags().Expand().Border(wxBOTTOM, 1));
+    button = new wxButton(panel, wxID_ANY, wxString::FromAscii("2"));
+    sizer->Add(button, wxSizerFlags().Expand());
 
-    text = new wxStaticText(panel, wxID_ANY, wxString::FromAscii("3"));
-    sizer->Add(text, wxSizerFlags().Expand().Border(wxUP, 1));
+    button = new wxButton(panel, wxID_ANY, wxString::FromAscii("3"));
+    sizer->Add(button, wxSizerFlags().Expand());
 
-    text = new wxStaticText(panel, wxID_ANY, wxString::FromAscii("4"));
-    sizer->Add(text, wxSizerFlags().Expand().Border(wxLEFT, 1));
+    button = new wxButton(panel, wxID_ANY, wxString::FromAscii("4"));
+    sizer->Add(button, wxSizerFlags().Expand());
 
     panel->SetSizerAndFit(sizer);
 
