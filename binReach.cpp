@@ -44,6 +44,23 @@ public:
   }
 };
 
+class ReachItPanel : public wxPanel
+{
+public:
+  ReachItPanel(wxWindow *parent) : wxPanel(parent)
+  {
+    std::cout << "In ReachItPanel : " << std::endl;
+    Connect(wxEVT_CHAR, wxKeyEventHandler(ReachItPanel::OnChar), NULL, this);
+    Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(ReachItPanel::OnChar), NULL, this);
+  }
+  virtual ~ReachItPanel() {}
+  void OnChar(wxKeyEvent& event)
+  {
+    std::cout << "In OnChar : " << event.GetKeyCode() << std::endl;
+    event.Skip();
+  }
+};
+
 class MyApp : public wxApp
 {
 public:
@@ -68,34 +85,51 @@ public:
     button4->MoveBeforeInTabOrder(button3);
     sizer->Add(button4, wxSizerFlags().Expand());
 
+    // Initial view.
     reachIt->SetSizerAndFit(sizer);
     sizer->Layout();
     reachIt->Layout();
 
-    // sizer->Remove(1);
-    // reachIt->RemoveChild(button2);
-    button2->Destroy();
+    // create panel in place of second button.
+    ReachItPanel *panel = new ReachItPanel(reachIt);
+    ReachItPanel *innerPanel = new ReachItPanel(panel);
+    wxButton *button5 = new wxButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
+    wxButton *button6 = new wxButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
+    wxButton *button7 = new wxButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
+    wxButton *button8 = new wxButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
+    wxGridSizer *innerPanelSizer = new wxGridSizer(2,2,0,0);
+    innerPanelSizer->Add(button5, wxSizerFlags().Expand());
+    innerPanelSizer->Add(button6, wxSizerFlags().Expand());
+    innerPanelSizer->Add(button7, wxSizerFlags().Expand());
+    innerPanelSizer->Add(button8, wxSizerFlags().Expand());
+    innerPanel->SetSizerAndFit(innerPanelSizer);
 
-    reachIt->Layout();
-
-    wxPanel *panel = new wxPanel(reachIt);
-    wxButton *button5 = new wxButton(panel, wxID_ANY, wxString::FromAscii("5"));
     wxStaticBox *box1 = new wxStaticBox(panel, wxID_ANY, wxString::FromAscii("5b1"));
     wxStaticBox *box2 = new wxStaticBox(panel, wxID_ANY, wxString::FromAscii("5b2"));
     wxStaticBox *box3 = new wxStaticBox(panel, wxID_ANY, wxString::FromAscii("5b3"));
 
     wxGridSizer *panelSizer = new wxGridSizer(2,2,0,0);
-    panelSizer->Add(button5, wxSizerFlags().Expand());
+    panelSizer->Add(innerPanel, wxSizerFlags().Expand());
     panelSizer->Add(box1, wxSizerFlags().Expand());
     panelSizer->Add(box2, wxSizerFlags().Expand());
     panelSizer->Add(box3, wxSizerFlags().Expand());
 
     panel->SetSizerAndFit(panelSizer);
 
-    sizer->Insert(1, panel, wxSizerFlags().Expand());
-
+    // Replace button2 with panel.
+    sizer->Replace(button2, panel, false);
+    button2->Hide();
     sizer->Layout();
     reachIt->Layout();
+
+    // Replace panel with button2
+    // sizer->Replace(panel, button2, false);
+    // panel->Hide();
+    // button2->Show();
+    // sizer->Layout();
+    // reachIt->Layout();
+
+    // button3->SetFocus();
     return true;
   }
 };
