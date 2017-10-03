@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <string>
 
 class ReachItGrid : public wxGrid
 {
@@ -40,32 +41,104 @@ class ReachItFrame : public wxFrame
 public:
   ReachItFrame(const wxString& title) : wxFrame()
   {
+    SetEvtHandlerEnabled(true);
     Create(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(250, 150));
   }
+
+  void OnChar(wxKeyEvent & event)
+  {
+    std::cout << "In ReachItFrame.. onChar" << std::endl;
+    event.Skip();
+  }
+
+  void OnExit(wxCommandEvent& WXUNUSED(event))
+  {
+    std::cout << "Onexit " << std::endl;
+  }
+
+  wxDECLARE_EVENT_TABLE();
 };
+
+wxBEGIN_EVENT_TABLE(ReachItFrame, wxFrame)
+  EVT_MENU(wxID_EXIT, ReachItFrame::OnExit)
+  EVT_CHAR(ReachItFrame::OnChar)
+  EVT_KEY_DOWN(ReachItFrame::OnChar)
+wxEND_EVENT_TABLE()
 
 class ReachItPanel : public wxPanel
 {
+  static std::string name;
 public:
   ReachItPanel(wxWindow *parent) : wxPanel(parent)
   {
+    name = "ReachItPanel";
     std::cout << "In ReachItPanel : " << std::endl;
+    SetEvtHandlerEnabled(true);
     Connect(wxEVT_CHAR, wxKeyEventHandler(ReachItPanel::OnChar), NULL, this);
-    Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(ReachItPanel::OnChar), NULL, this);
   }
+
   virtual ~ReachItPanel() {}
+
   void OnChar(wxKeyEvent& event)
   {
-    std::cout << "In OnChar : " << event.GetKeyCode() << std::endl;
-    event.Skip();
+    std::cout << "In ReachItPanel OnChar : " << event.GetKeyCode() << std::endl;
+    if ((event.GetKeyCode() == WXK_LEFT)
+    ||  (event.GetKeyCode() == WXK_RIGHT))
+    {
+      wxWindow *child = static_cast<wxWindow*>(event.GetEventObject());
+      const wxWindowList & children = this->GetChildren();
+      int pos = children.IndexOf(child);
+      std::cout << "Found at position : " << pos << " child : " << child << " this " << this << std::endl;
+      assert ((pos != wxNOT_FOUND) && ((unsigned int)pos < children.size()) && (pos >= 0) && (children.size() > 0));
+      int delta = (WXK_LEFT == event.GetKeyCode()) ? -1 : 1;
+      int nextPos = (pos + delta) % children.size();
+      children.Item(nextPos)->GetData()->SetFocus();
+    }
   }
 };
+
+std::string ReachItPanel::name = "ReachItPanel";
+
+class ReachItButton : public wxButton
+{
+public:
+  ReachItButton(wxWindow* reachIt, wxWindowID id, const wxString & label) : wxButton(reachIt, id, label)
+  {
+  }
+
+  void OnChar(wxKeyEvent & event)
+  {
+    std::cout << "In ReachItButton.. onChar" << std::endl;
+    if ((event.GetKeyCode() == WXK_LEFT)
+    ||  (event.GetKeyCode() == WXK_RIGHT))
+    {
+      // Let it go to parent.
+      event.ResumePropagation(999);
+      event.Skip();
+    }
+  }
+
+  wxDECLARE_EVENT_TABLE();
+};
+
+wxBEGIN_EVENT_TABLE(ReachItButton, wxButton)
+  EVT_CHAR(ReachItButton::OnChar)
+wxEND_EVENT_TABLE()
 
 class MyApp : public wxApp
 {
 public:
   bool OnInit()
   {
+    wxLog* logger = new wxLogStream(&std::cout);
+    wxLog::SetActiveTarget(logger);
+
+    // wxLog::SetActiveTarget( new wxLogStderr );
+    wxLog::AddTraceMask( wxTRACE_Messages );
+    wxLog::AddTraceMask( wxT("keyevent") );
+    // wxLog::SetTraceMask( wxTraceMessages );
+    wxLog::SetVerbose( true );
+
     ReachItFrame *reachIt = new ReachItFrame(wxT("ReachIt"));
     reachIt->Show(true);
     assert(reachIt->SetTransparent(150));
@@ -93,10 +166,10 @@ public:
     // create panel in place of second button.
     ReachItPanel *panel = new ReachItPanel(reachIt);
     ReachItPanel *innerPanel = new ReachItPanel(panel);
-    wxButton *button5 = new wxButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
-    wxButton *button6 = new wxButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
-    wxButton *button7 = new wxButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
-    wxButton *button8 = new wxButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
+    ReachItButton *button5 = new ReachItButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
+    ReachItButton *button6 = new ReachItButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
+    ReachItButton *button7 = new ReachItButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
+    ReachItButton *button8 = new ReachItButton(innerPanel, wxID_ANY, wxString::FromAscii("5"));
     wxGridSizer *innerPanelSizer = new wxGridSizer(2,2,0,0);
     innerPanelSizer->Add(button5, wxSizerFlags().Expand());
     innerPanelSizer->Add(button6, wxSizerFlags().Expand());
