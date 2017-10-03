@@ -90,9 +90,32 @@ public:
       int pos = children.IndexOf(child);
       std::cout << "Found at position : " << pos << " child : " << child << " this " << this << std::endl;
       assert ((pos != wxNOT_FOUND) && ((unsigned int)pos < children.size()) && (pos >= 0) && (children.size() > 0));
-      int delta = (WXK_LEFT == event.GetKeyCode()) ? -1 : 1;
-      int nextPos = (pos + delta) % children.size();
+      int nextPos = (WXK_LEFT == event.GetKeyCode()) ? nextClockWisePos(pos) : nextAntiClockWisePos(pos) ;
       children.Item(nextPos)->GetData()->SetFocus();
+    }
+  }
+
+  int nextClockWisePos(int pos)
+  {
+    switch (pos)
+    {
+      case 0 : return 1;
+      case 1 : return 3;
+      case 2 : return 0;
+      case 3 : return 2;
+      default : assert(false);
+    }
+  }
+
+  int nextAntiClockWisePos(int pos)
+  {
+    switch (pos)
+    {
+      case 0 : return 2;
+      case 1 : return 0;
+      case 2 : return 3;
+      case 3 : return 1;
+      default : assert(false);
     }
   }
 };
