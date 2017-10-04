@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cassert>
 #include <string>
+#include <map>
 
 class ReachItGrid : public wxGrid
 {
@@ -82,11 +83,11 @@ wxEND_EVENT_TABLE()
 
 class ReachItPanel : public wxPanel
 {
-  wxWindow* hiddenWindow;
+  std::map<ReachItPanel*, ReachItButton*> hiddenButtons;
 
 public:
 
-  ReachItPanel(wxWindow *parent) : wxPanel(parent), hiddenWindow(NULL)
+  ReachItPanel(wxWindow *parent) : wxPanel(parent)
   {
     wxLogTrace("mylog", "In ReachItPanel : ");
     SetEvtHandlerEnabled(true);
@@ -110,10 +111,10 @@ public:
   void OnChar(wxKeyEvent& event)
   {
     wxLogTrace("mylog", "In ReachItPanel OnChar : %d", event.GetKeyCode());
-    wxWindow *child = static_cast<wxWindow*>(event.GetEventObject());
+    ReachItButton *childButton = static_cast<ReachItButton*>(event.GetEventObject());
     const wxWindowList & children = this->GetChildren();
-    int pos = children.IndexOf(child);
-    wxLogTrace("mylog", "Found at position : %d : child : %p : this : %p ", pos, child, this);
+    int pos = children.IndexOf(childButton);
+    wxLogTrace("mylog", "Found at position : %d : childButton : %p : this : %p ", pos, childButton, this);
     assert ((pos != wxNOT_FOUND) && ((unsigned int)pos < children.size()) && (pos >= 0) && (children.size() > 0));
 
     if ((event.GetKeyCode() == WXK_LEFT)
@@ -126,16 +127,20 @@ public:
     if (event.GetKeyCode() == WXK_DOWN)
     {
       ReachItPanel *newPanel = new ReachItPanel(this);
-      this->GetSizer()->Replace(child, newPanel, false);
-      child->Hide();
+      this->GetSizer()->Replace(childButton, newPanel, false);
+      childButton->Hide();
       this->GetSizer()->Layout();
-      hiddenWindow = child;
-      // TODO : set focus on the child.
+      // assert that this button is not already hidden. Should not be possible from view.
+      for (auto it : hiddenButtons) {
+        assert(it.second != childButton);
+      }
+      hiddenButtons[newPanel] = childButton;
+      // TODO : set focus on the childButton of newPanel.
     }
     else
     if (event.GetKeyCode() == WXK_UP)
     {
-      // ignore the child.
+      // ignore the childButton.
       ReachItPanel* parent = dynamic_cast<ReachItPanel*>(this->m_parent);
       if (NULL != parent) // false for topmost panel..
       {
@@ -144,14 +149,19 @@ public:
     }
   }
 
-  void moveUp(ReachItPanel *child)
+  void moveUp(ReachItPanel *childPanel)
   {
-    wxLogTrace("mylog", "In moveup.. : this : %p : child : %p", this, child);
-    this->GetSizer()->Replace(child, hiddenWindow, false);
-    child->Destroy();
-    hiddenWindow->Show();
+    wxLogTrace("mylog", "In moveup.. : this : %p : childPanel : %p", this, childPanel);
+    assert(hiddenButtons.end() != hiddenButtons.find(childPanel));
+
+    ReachItButton *hiddenButton = hiddenButtons.find(childPanel)->second;
+    this->GetSizer()->Replace(childPanel, hiddenButton, false);
+    childPanel->Destroy();
+
+    hiddenButton->Show();
     this->GetSizer()->Layout();
-    hiddenWindow = NULL;
+    hiddenButton->SetFocus();
+    hiddenButtons.erase(childPanel);
   }
 
   int nextClockWisePos(int pos)
