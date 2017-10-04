@@ -7,36 +7,6 @@
 #include <string>
 #include <map>
 
-class ReachItGrid : public wxGrid
-{
-public:
-  ReachItGrid(wxWindow* parent) : wxGrid(parent, wxID_ANY)
-  {
-    CreateGrid(2,2);
-    SetTabBehaviour(Tab_Wrap);
-  }
-
-  virtual void OnSize(wxSizeEvent & event)
-  {
-    wxSize clientSize = GetClientSize();
-
-    long numCols = GetNumberCols();
-    long width = clientSize.GetWidth() / numCols;
-    for (long i = 0; i < numCols; ++i) {
-      SetColSize(0, width);
-    }
-
-    long numRows = GetNumberRows();
-    long height = clientSize.GetHeight() / numRows;
-    for (long j = 0; j < numRows; ++j) {
-      SetRowSize(0, height);
-    }
-
-    event.Skip();
-  }
-
-};
-
 class ReachItFrame : public wxFrame
 {
 public:
@@ -135,7 +105,9 @@ public:
         assert(it.second != childButton);
       }
       hiddenButtons[newPanel] = childButton;
-      // TODO : set focus on the childButton of newPanel.
+
+      // set focus on first child of newPanel.
+      newPanel->GetChildren().Item(0)->GetData()->SetFocus();
     }
     else
     if (event.GetKeyCode() == WXK_UP)
