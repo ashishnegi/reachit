@@ -1,0 +1,13 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "taskName": "build",
+            "type": "shell",
+            "command": "source ./set_project.sh && g++ -std=c++11 -O0 -ggdb binReach.cpp `wx-config --cxxflags --libs std` -Wall -o program",
+            "problemMatcher": []
+        }
+    ]
+}

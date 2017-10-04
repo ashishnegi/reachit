@@ -1,0 +1,32 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "(gdb) Attach",
+                "type": "cppdbg",
+                "request": "attach",
+                "program": "/home/ashish/work/binReach/program",
+                "processId": "${command:pickProcess}",
+                "MIMode": "gdb"
+            },
+            {
+                "name": "(gdb) Launch",
+                "type": "cppdbg",
+                "request": "launch",
+                "program": "/home/ashish/work/binReach/program",
+                "args": [],
+                "stopAtEntry": false,
+                "cwd": "${workspaceRoot}",
+                "environment": [],
+                "externalConsole": true,
+                "MIMode": "gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+                ]
+            }
+        ]
+    }
