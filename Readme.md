@@ -8,9 +8,8 @@ Divide the screen into smaller pieces with each user input to take her to the de
 ## Implementation :
 1. Done. Use a transparent window.
 2. Done. Create four quadrants in current selected step.
-3. ~ Use left/right to go to next quadrant and up/down to go to next/previous step. ~
-   Done : Currently use arrow keys for navigation.
-   Tap key d/D for going down and key u/U for going up.
+3. Done. Use left/right to go to next quadrant
+         and up/down to go to next/previous step.
 3.a Create sub-grids inside a grid at any location.
 4. Use enter to move out of binReach_mode.
 5. Long press another key to come back in binReach_mode.
