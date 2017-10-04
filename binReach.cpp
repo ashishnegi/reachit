@@ -41,29 +41,9 @@ class ReachItFrame : public wxFrame
 public:
   ReachItFrame(const wxString& title) : wxFrame()
   {
-    SetEvtHandlerEnabled(true);
     Create(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(250, 150));
   }
-
-  void OnChar(wxKeyEvent & event)
-  {
-    std::cout << "In ReachItFrame.. onChar" << std::endl;
-    event.Skip();
-  }
-
-  void OnExit(wxCommandEvent& WXUNUSED(event))
-  {
-    std::cout << "Onexit " << std::endl;
-  }
-
-  wxDECLARE_EVENT_TABLE();
 };
-
-wxBEGIN_EVENT_TABLE(ReachItFrame, wxFrame)
-  EVT_MENU(wxID_EXIT, ReachItFrame::OnExit)
-  EVT_CHAR(ReachItFrame::OnChar)
-  EVT_KEY_DOWN(ReachItFrame::OnChar)
-wxEND_EVENT_TABLE()
 
 class ReachItButton : public wxButton
 {
@@ -74,7 +54,8 @@ public:
 
   void OnChar(wxKeyEvent & event)
   {
-    std::cout << "In ReachItButton.. onChar" << std::endl;
+    wxLogTrace("mylog", "In ReachItButton.. onChar");
+
     switch (event.GetKeyCode())
     {
       case WXK_LEFT:
@@ -107,7 +88,7 @@ public:
 
   ReachItPanel(wxWindow *parent) : wxPanel(parent), hiddenWindow(NULL)
   {
-    std::cout << "In ReachItPanel : " << std::endl;
+    wxLogTrace("mylog", "In ReachItPanel : ");
     SetEvtHandlerEnabled(true);
     Connect(wxEVT_CHAR, wxKeyEventHandler(ReachItPanel::OnChar), NULL, this);
 
@@ -128,12 +109,11 @@ public:
 
   void OnChar(wxKeyEvent& event)
   {
-    std::cout << "In ReachItPanel OnChar : " << event.GetKeyCode() << std::endl;
-
+    wxLogTrace("mylog", "In ReachItPanel OnChar : %d", event.GetKeyCode());
     wxWindow *child = static_cast<wxWindow*>(event.GetEventObject());
     const wxWindowList & children = this->GetChildren();
     int pos = children.IndexOf(child);
-    std::cout << "Found at position : " << pos << " child : " << child << " this " << this << std::endl;
+    wxLogTrace("mylog", "Found at position : %d : child : %p : this : %p ", pos, child, this);
     assert ((pos != wxNOT_FOUND) && ((unsigned int)pos < children.size()) && (pos >= 0) && (children.size() > 0));
 
     if ((event.GetKeyCode() == WXK_LEFT)
@@ -150,6 +130,7 @@ public:
       child->Hide();
       this->GetSizer()->Layout();
       hiddenWindow = child;
+      // TODO : set focus on the child.
     }
     else
     if (event.GetKeyCode() == WXK_UP)
@@ -165,9 +146,12 @@ public:
 
   void moveUp(ReachItPanel *child)
   {
+    wxLogTrace("mylog", "In moveup.. : this : %p : child : %p", this, child);
     this->GetSizer()->Replace(child, hiddenWindow, false);
     child->Destroy();
+    hiddenWindow->Show();
     this->GetSizer()->Layout();
+    hiddenWindow = NULL;
   }
 
   int nextClockWisePos(int pos)
@@ -205,6 +189,7 @@ public:
 
     wxLog::AddTraceMask( wxTRACE_Messages );
     wxLog::AddTraceMask( wxT("keyevent") );
+    wxLog::AddTraceMask( wxT("mylog") );
     wxLog::SetVerbose( true );
 
     ReachItFrame *reachIt = new ReachItFrame(wxT("ReachIt"));
