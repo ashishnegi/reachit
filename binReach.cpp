@@ -14,7 +14,24 @@ public:
   {
     Create(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(250, 150));
   }
+
+  void OnChar(wxKeyEvent & event)
+  {
+    wxLogTrace("mylog", "In ReachItButton.. onChar");
+
+    switch (event.GetKeyCode())
+    {
+      case WXK_RETURN:
+        this->Iconize(true);
+        break;
+    }
+  }
+  wxDECLARE_EVENT_TABLE();
 };
+
+wxBEGIN_EVENT_TABLE(ReachItFrame, wxFrame)
+  EVT_CHAR(ReachItFrame::OnChar)
+wxEND_EVENT_TABLE()
 
 class ReachItButton : public wxButton
 {
@@ -33,6 +50,7 @@ public:
       case WXK_RIGHT:
       case WXK_UP:
       case WXK_DOWN:
+      case WXK_RETURN:
       {
         // Let it go to parent.
         event.ResumePropagation(999);
@@ -80,6 +98,13 @@ public:
 
   void OnChar(wxKeyEvent& event)
   {
+    // ReachIt mode off..
+    if (event.GetKeyCode() == WXK_RETURN)
+    {
+      event.Skip(); // let the parent frame handle it.
+      return;
+    }
+
     wxLogTrace("mylog", "In ReachItPanel OnChar : %d", event.GetKeyCode());
     ReachItButton *childButton = static_cast<ReachItButton*>(event.GetEventObject());
     const wxWindowList & children = this->GetChildren();
@@ -175,6 +200,7 @@ public:
     wxLog::SetVerbose( true );
 
     ReachItFrame *reachIt = new ReachItFrame(wxT("ReachIt"));
+    // Show full screen transparent window.
     reachIt->Show(true);
     assert(reachIt->SetTransparent(150));
     assert(reachIt->ShowFullScreen(true, wxFULLSCREEN_ALL));
