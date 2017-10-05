@@ -46,11 +46,11 @@ public:
 
     switch (event.GetKeyCode())
     {
+      case WXK_RETURN:
       case WXK_LEFT:
       case WXK_RIGHT:
       case WXK_UP:
       case WXK_DOWN:
-      case WXK_RETURN:
       {
         // Let it go to parent.
         event.ResumePropagation(999);
@@ -62,11 +62,18 @@ public:
     }
   }
 
+  void OnSetFocus(wxFocusEvent & event)
+  {
+    // move the cursor to the top of this button.
+    this->WarpPointer(0, 0);
+  }
+
   wxDECLARE_EVENT_TABLE();
 };
 
 wxBEGIN_EVENT_TABLE(ReachItButton, wxButton)
   EVT_CHAR(ReachItButton::OnChar)
+  EVT_SET_FOCUS(ReachItButton::OnSetFocus)
 wxEND_EVENT_TABLE()
 
 class ReachItPanel : public wxPanel
