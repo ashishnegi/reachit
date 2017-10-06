@@ -122,7 +122,7 @@ public:
     if ((event.GetKeyCode() == WXK_LEFT)
     ||  (event.GetKeyCode() == WXK_RIGHT))
     {
-      int nextPos = (WXK_LEFT == event.GetKeyCode()) ? nextClockWisePos(pos) : nextAntiClockWisePos(pos) ;
+      int nextPos = (WXK_LEFT == event.GetKeyCode()) ? nextAntiClockWisePos(pos) : nextClockWisePos(pos) ;
       children.Item(nextPos)->GetData()->SetFocus();
     }
     else
