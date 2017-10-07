@@ -6,7 +6,7 @@
         {
             "taskName": "build",
             "type": "shell",
-            "command": "source ./set_project.sh && g++ -std=c++11 -g -O0 -ggdb binReach.cpp `wx-config --cxxflags --libs std` -Wall -o program",
+            "command": "source ./set_project.sh && i686-w64-mingw32-g++ -ggdb -O0  binReach.cpp `wx-config --cxxflags --libs std` -Wall -o program -static-libgcc -static-libstdc++ -Wl,-Bstatic,-lstdc++,-lpthread -Wl,-Bdynamic",
             "problemMatcher": []
         }
     ]

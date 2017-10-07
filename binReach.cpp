@@ -19,7 +19,7 @@ public:
 
   void OnChar(wxKeyEvent & event)
   {
-    wxLogTrace("mylog", "In ReachItButton.. onChar");
+    wxLogMessage("mylog %s", "In ReachItButton.. onChar");
 
     switch (event.GetKeyCode())
     {
@@ -38,7 +38,8 @@ wxEND_EVENT_TABLE()
 class ReachItButton : public wxButton
 {
 public:
-  ReachItButton(wxWindow* reachIt, wxWindowID id, const wxString & label) : wxButton(reachIt, id, label)
+  ReachItButton(wxWindow* reachIt, wxWindowID id, const wxString & label)
+  : wxButton(reachIt, id, label, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS)
   {
   }
 
@@ -46,7 +47,7 @@ public:
 
   void OnChar(wxKeyEvent & event)
   {
-    wxLogTrace("mylog", "In ReachItButton.. onChar");
+    wxLogMessage("mylog %s", "In ReachItButton.. onChar");
 
     switch (event.GetKeyCode())
     {
@@ -88,9 +89,9 @@ public:
 
   ReachItPanel(wxWindow *parent) : wxPanel(parent)
   {
-    wxLogTrace("mylog", "In ReachItPanel : ");
+    wxLogMessage("mylog %s", "In ReachItPanel : ");
 
-    Connect(wxEVT_CHAR, wxKeyEventHandler(ReachItPanel::OnChar), NULL, this);
+    Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(ReachItPanel::OnChar), NULL, this);
 
     ReachItButton *button5 = new ReachItButton(this, wxID_ANY, wxString::FromAscii("5"));
     ReachItButton *button6 = new ReachItButton(this, wxID_ANY, wxString::FromAscii("5"));
@@ -116,11 +117,11 @@ public:
       return;
     }
 
-    wxLogTrace("mylog", "In ReachItPanel OnChar : %d", event.GetKeyCode());
+    wxLogMessage("mylog %s %d", "In ReachItPanel OnChar : ", event.GetKeyCode());
     ReachItButton *childButton = static_cast<ReachItButton*>(event.GetEventObject());
     const wxWindowList & children = this->GetChildren();
     int pos = children.IndexOf(childButton);
-    wxLogTrace("mylog", "Found at position : %d : childButton : %p : this : %p ", pos, childButton, this);
+    wxLogMessage("mylog Found at position : %d : childButton : %p : this : %p ", pos, childButton, this);
     assert ((pos != wxNOT_FOUND) && ((unsigned int)pos < children.size()) && (pos >= 0) && (children.size() > 0));
 
     if ((event.GetKeyCode() == WXK_LEFT)
@@ -159,7 +160,7 @@ public:
 
   void moveUp(ReachItPanel *childPanel)
   {
-    wxLogTrace("mylog", "In moveup.. : this : %p : childPanel : %p", this, childPanel);
+    wxLogMessage("mylog In moveup.. : this : %p : childPanel : %p", this, childPanel);
     assert(hiddenButtons.end() != hiddenButtons.find(childPanel));
 
     ReachItButton *hiddenButton = hiddenButtons.find(childPanel)->second;

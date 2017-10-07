@@ -16,6 +16,8 @@
 # configure :
 # ../configure --disable-shared --enable-unicode --enable-debug --enable-debug_gdb -C --host=i686-w64-mingw32 --build=i686-pc-cygwin
 # i686-w64-mingw32-g++  binReach.cpp `wx-config --cxxflags --libs std` -Wall -o program -static-libgcc -static-libstdc++ -Wl,-Bstatic,-lstdc++,-lpthread -Wl,-Bdynamic
+# -exec set substitute-path /cygdrive/c/Users /Users
+# -exec set substitute-path ../src /Users/ashish/work/reachit/wxWidgets-3.1.0/src
 
 # mac
 # build with --disable-mediactrl
