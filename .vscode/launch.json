@@ -1,0 +1,34 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "(gdb) Attach",
+                "type": "cppdbg",
+                "request": "attach",
+                "program": "${workspaceRoot}/program.exe",
+                "processId": "${command:pickProcess}",
+                "MIMode": "gdb",
+                "miDebuggerPath": "C:\\cygwin64\\bin\\gdb32.exe"
+            },
+            {
+                "name": "(gdb) Launch",
+                "type": "cppdbg",
+                "request": "launch",
+                "program": "${workspaceRoot}/program.exe",
+                "args": [],
+                "stopAtEntry": false,
+                "cwd": "${workspaceRoot}",
+                "environment": [],
+                "externalConsole": true,
+                "MIMode": "gdb",
+                "miDebuggerPath": "C:\\cygwin64\\bin\\gdb32.exe",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+                ]
+            }
+        ]
+    }
