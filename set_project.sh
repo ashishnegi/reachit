@@ -33,4 +33,4 @@
 # g++ -mmacosx-version-min=10.7 binReach.cpp `wx-config --cxxflags --libs std` -o program
 
 
-export PATH=$PATH:./wxWidgets-3.1.0/build_release
+export PATH=$PATH:./wxWidgets-3.1.0/build_debug
