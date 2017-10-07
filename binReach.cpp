@@ -15,6 +15,8 @@ public:
     Create(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(250, 150));
   }
 
+  virtual ~ReachItFrame() {}
+
   void OnChar(wxKeyEvent & event)
   {
     wxLogTrace("mylog", "In ReachItButton.. onChar");
@@ -30,7 +32,7 @@ public:
 };
 
 wxBEGIN_EVENT_TABLE(ReachItFrame, wxFrame)
-  EVT_CHAR(ReachItFrame::OnChar)
+  EVT_KEY_DOWN(ReachItFrame::OnChar)
 wxEND_EVENT_TABLE()
 
 class ReachItButton : public wxButton
@@ -39,6 +41,8 @@ public:
   ReachItButton(wxWindow* reachIt, wxWindowID id, const wxString & label) : wxButton(reachIt, id, label)
   {
   }
+
+  virtual ~ReachItButton() {}
 
   void OnChar(wxKeyEvent & event)
   {
@@ -72,7 +76,7 @@ public:
 };
 
 wxBEGIN_EVENT_TABLE(ReachItButton, wxButton)
-  EVT_CHAR(ReachItButton::OnChar)
+  EVT_KEY_DOWN(ReachItButton::OnChar)
   EVT_SET_FOCUS(ReachItButton::OnSetFocus)
 wxEND_EVENT_TABLE()
 
@@ -85,7 +89,7 @@ public:
   ReachItPanel(wxWindow *parent) : wxPanel(parent)
   {
     wxLogTrace("mylog", "In ReachItPanel : ");
-    SetEvtHandlerEnabled(true);
+
     Connect(wxEVT_CHAR, wxKeyEventHandler(ReachItPanel::OnChar), NULL, this);
 
     ReachItButton *button5 = new ReachItButton(this, wxID_ANY, wxString::FromAscii("5"));
