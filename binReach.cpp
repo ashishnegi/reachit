@@ -183,6 +183,7 @@ public:
       case 3 : return 2;
       default : assert(false);
     }
+    return -1; // for compiler warning.
   }
 
   int nextAntiClockWisePos(int pos)
@@ -195,6 +196,7 @@ public:
       case 3 : return 1;
       default : assert(false);
     }
+    return -1; // for compiler warning.
   }
 };
 
