@@ -19,7 +19,7 @@ public:
 
   void OnChar(wxKeyEvent & event)
   {
-    wxLogMessage("mylog %s", "In ReachItButton.. onChar");
+    wxLogMessage("mylog %s", "In ReachItFrame.. onChar");
 
     switch (event.GetKeyCode())
     {
@@ -32,7 +32,7 @@ public:
 };
 
 wxBEGIN_EVENT_TABLE(ReachItFrame, wxFrame)
-  EVT_KEY_DOWN(ReachItFrame::OnChar)
+  EVT_CHAR(ReachItFrame::OnChar)
 wxEND_EVENT_TABLE()
 
 class ReachItButton : public wxButton
@@ -47,7 +47,7 @@ public:
 
   void OnChar(wxKeyEvent & event)
   {
-    wxLogMessage("mylog %s", "In ReachItButton.. onChar");
+    wxLogMessage("mylog %s keycode : %d", "In ReachItButton.. onChar", event.GetKeyCode());
 
     switch (event.GetKeyCode())
     {
@@ -77,7 +77,7 @@ public:
 };
 
 wxBEGIN_EVENT_TABLE(ReachItButton, wxButton)
-  EVT_KEY_DOWN(ReachItButton::OnChar)
+  EVT_CHAR(ReachItButton::OnChar)
   EVT_SET_FOCUS(ReachItButton::OnSetFocus)
 wxEND_EVENT_TABLE()
 
@@ -90,8 +90,6 @@ public:
   ReachItPanel(wxWindow *parent) : wxPanel(parent)
   {
     wxLogMessage("mylog %s", "In ReachItPanel : ");
-
-    Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(ReachItPanel::OnChar), NULL, this);
 
     ReachItButton *button5 = new ReachItButton(this, wxID_ANY, wxString::FromAscii("5"));
     ReachItButton *button6 = new ReachItButton(this, wxID_ANY, wxString::FromAscii("5"));
@@ -139,7 +137,13 @@ public:
       this->GetSizer()->Layout();
       // assert that this button is not already hidden. Should not be possible from view.
       for (auto it : hiddenButtons) {
-        assert(it.second != childButton);
+        if (it.second == childButton) // in case, user used mouse
+        {
+          this->GetSizer()->Replace(it.first, newPanel, false);
+          it.first->Destroy();
+          this->GetSizer()->Layout();
+          hiddenButtons.erase(it.first);
+        }
       }
       hiddenButtons[newPanel] = childButton;
 
@@ -198,13 +202,38 @@ public:
     }
     return -1; // for compiler warning.
   }
+
+  // on focus on panel, move the focus to first visible button.
+  // void OnSetFocus(wxFocusEvent & event)
+  // {
+  //   wxLogMessage("mylog : ReachItPanel : OnSetFocus : ");
+
+  //   if (hiddenButtons.size() > 0)
+  //   {
+  //     hiddenButtons.begin()->first->OnSetFocus(event);
+  //   }
+  //   else
+  //   {
+  //     this->GetChildren().Item(0)->GetData()->SetFocus();
+  //   }
+  // }
+
+  wxDECLARE_EVENT_TABLE();
 };
+
+wxBEGIN_EVENT_TABLE(ReachItPanel, wxPanel)
+  EVT_CHAR(ReachItPanel::OnChar)
+  // EVT_SET_FOCUS(ReachItPanel::OnSetFocus)
+wxEND_EVENT_TABLE()
 
 class MyApp : public wxApp
 {
 public:
-  bool OnInit()
+  virtual bool OnInit()
   {
+    if ( !wxApp::OnInit() )
+      return false;
+
     wxLog* logger = new wxLogStream(&std::cout);
     wxLog::SetActiveTarget(logger);
 
@@ -220,6 +249,12 @@ public:
     assert(reachIt->ShowFullScreen(true, wxFULLSCREEN_ALL));
 
     new ReachItPanel(reachIt);
+
+    // Hack for bug windows : Initial layout does not happen properly and
+    // four buttons come at the top of window taking small space.
+    reachIt->Iconize(true);
+    reachIt->Iconize(false);
+
     return true;
   }
 };
