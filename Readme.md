@@ -20,3 +20,6 @@ Divide the screen into smaller pieces with each user input to take her to the de
 6. Done. Show mouse cursor movement.
 7. Highligh button which gets the focus. Or keep highlighting the mouse position.
 8. Give user a way to set the keys for app.
+
+## Binaies :
+Look in [bin](https://github.com/ashishnegi/reachit/tree/master/bin) directory for your platform. Use release version.
