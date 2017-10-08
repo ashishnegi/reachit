@@ -91,10 +91,10 @@ public:
   {
     wxLogMessage("mylog %s", "In ReachItPanel : ");
 
-    ReachItButton *button5 = new ReachItButton(this, wxID_ANY, wxString::FromAscii("5"));
-    ReachItButton *button6 = new ReachItButton(this, wxID_ANY, wxString::FromAscii("5"));
-    ReachItButton *button7 = new ReachItButton(this, wxID_ANY, wxString::FromAscii("5"));
-    ReachItButton *button8 = new ReachItButton(this, wxID_ANY, wxString::FromAscii("5"));
+    ReachItButton *button5 = new ReachItButton(this, wxID_ANY, wxString::FromAscii(""));
+    ReachItButton *button6 = new ReachItButton(this, wxID_ANY, wxString::FromAscii(""));
+    ReachItButton *button7 = new ReachItButton(this, wxID_ANY, wxString::FromAscii(""));
+    ReachItButton *button8 = new ReachItButton(this, wxID_ANY, wxString::FromAscii(""));
 
     wxGridSizer *sizer = new wxGridSizer(2,2,0,0);
     sizer->Add(button5, wxSizerFlags().Expand());
