@@ -34,3 +34,8 @@
 
 
 export PATH=$PATH:./wxWidgets-3.1.0/build_debug
+
+## making gifs
+# sudo apt-get install byzanz key-mon
+# key-mon
+# byzanz-record --delay=3 --duration=15 --x=0 --y=0 --width=2700 --height=1400 demo.gif
