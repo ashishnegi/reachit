@@ -24,5 +24,5 @@ Divide the screen into smaller pieces with each user input to take her to the de
 ## Binaries :
 Look in [bin](https://github.com/ashishnegi/reachit/tree/master/bin) directory for your platform. Use release version.
 
-## Building on mac.
+## Building on mac :
 Use `setup_mac.sh` for setup and build information.

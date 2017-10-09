@@ -15,14 +15,14 @@
 ## windows.
 # debug :
 # ../configure --disable-shared --enable-unicode --enable-debug --enable-debug_gdb -C --host=i686-w64-mingw32 --build=i686-pc-cygwin
-# i686-w64-mingw32-g++ -O0 -ggdb  binReach.cpp `wx-config --cxxflags --libs std` -Wall -o program -static-libgcc -static-libstdc++ -Wl,-Bstatic,-lstdc++,-lpthread -Wl,-Bdynamic
+# i686-w64-mingw32-g++ -O0 -ggdb  binReach.cpp `wx-config --cxxflags --libs std` -Wall -o reachit -static-libgcc -static-libstdc++ -Wl,-Bstatic,-lstdc++,-lpthread -Wl,-Bdynamic
 
 # release :
 # ../configure --disable-shared --enable-unicode --enable-debug --enable-debug_gdb -C --host=i686-w64-mingw32 --build=i686-pc-cygwin
-# i686-w64-mingw32-g++ -Os binReach.cpp `wx-config --cxxflags --libs std` -Wall -o program -static-libgcc -static-libstdc++ -Wl,-Bstatic,-lstdc++,-lpthread -Wl,-Bdynamic
-# source set_project.sh && i686-w64-mingw32-g++ $CXXFLAGS  binReach.cpp `wx-config --cxxflags --libs std` -Wall -o program -static-libgcc -static-libstdc++ -Wl,--gc-sections,-Bstatic,-lstdc++,-lpthread -Wl,-Bdynamic
-# strip -s program.exe
-# mv program.exe bin/win/release/reachit.exe
+# i686-w64-mingw32-g++ -Os binReach.cpp `wx-config --cxxflags --libs std` -Wall -o reachit -static-libgcc -static-libstdc++ -Wl,-Bstatic,-lstdc++,-lpthread -Wl,-Bdynamic
+# source set_project.sh && i686-w64-mingw32-g++ $CXXFLAGS  binReach.cpp `wx-config --cxxflags --libs std` -Wall -o reachit -static-libgcc -static-libstdc++ -Wl,--gc-sections,-Bstatic,-lstdc++,-lpthread -Wl,-Bdynamic
+# strip -s reachit.exe
+# mv reachit.exe bin/win/release/reachit.exe
 
 ## vs code debugging in windows.
 # -exec set substitute-path /cygdrive/c/Users /Users
@@ -30,8 +30,7 @@
 
 # mac
 # build with --disable-mediactrl
-# g++ -mmacosx-version-min=10.7 binReach.cpp `wx-config --cxxflags --libs std` -o program
-
+# g++ -mmacosx-version-min=10.7 binReach.cpp `wx-config --cxxflags --libs std` -o reachit
 
 export PATH=$PATH:./wxWidgets-3.1.0/build_debug
 
