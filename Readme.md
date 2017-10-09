@@ -1,6 +1,7 @@
 # ReachIt
 
 Help people with disability reach any corner of window in minimum keyboard steps.
+
 Also useful for people who don't have mouse or don't prefer using it.
 
 ## Idea :
