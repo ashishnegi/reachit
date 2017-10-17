@@ -1,8 +1,8 @@
 # ReachIt
 
-Help people with disability reach any corner of window in minimum keyboard steps.
+Help people who have difficulty controlling mouse movements reach any corner of window in minimum keyboard steps.
 
-Also useful for people who don't have mouse or don't prefer using it.
+Also useful for people who don't have mouse or don't prefer using it aka some programmers.
 
 ## Idea :
 Divide the screen into smaller pieces with each user input to take her to the desired position.
