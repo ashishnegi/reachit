@@ -38,7 +38,7 @@ Look in [bin](https://github.com/ashishnegi/reachit/tree/master/bin) directory f
 * Your mouse pointer will also move as you travel through the blocks.
 * When your mouse pointer has reached right spot, press `Enter` to start working on actual application.
 * Use mouse to click on the button.
-* Use `Atl-Tab` on windows to bring back the `reachit` window once you want to move to new location.
+* Use `Alt-Tab` on windows to bring back the `reachit` window once you want to move to new location.
 
 ## Building on mac :
 Use `setup_mac.sh` for setup and build information.
